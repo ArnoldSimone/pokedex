@@ -1,0 +1,16 @@
+body {
+  min-height: 100vh;
+  background-color: var(--bs-gray-900);
+}
+
+.navbar {
+  background-color: var(--bs-gray-800);
+}
+
+header {
+  height: 150px;
+}
+
+footer {
+  height: 100px;
+}

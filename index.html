@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokedex</title>
+
+
+  <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./styles/assets.css">
+  <link rel="stylesheet" href="./styles/standard.css">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./styles/fonts.css">
+  <link rel="shortcut icon" href="./assets/icons/pokeball.png" type="image/x-icon">
+  <link rel="stylesheet" href="./styles/bgColor.css">
+  <script src="./script.js"></script>
+</head>
+
+<body onload="loadAndShopPoke()">
+
+  <header>
+    <nav class="navbar fixed-top navbar-dark">
+      <div class="container-fluid">
+        <div class="header-left d-flex justify-content-between align-items-center w-100">
+          <div class="d-flex align-items-center">
+            <img class="img-pokemon-header" src="./assets/icons/pokemon.png" alt="">
+            <span class="navbar-brand ps-2 fs-1">Pokedex</span>
+          </div>
+          <input class="form-control w-auto" type="search" placeholder="Search ..." aria-label="Search">
+        </div>
+    </nav>
+  </header>
+
+  <main>
+    <div id="spinner-wrapper" class="spinner-wrapper disableLoadingSpinner">
+      <div class="spinner-border text-white" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div class="text-white p-3">Loading ...</div>
+    </div>
+
+
+    <div class="container">
+
+
+      <div id="content-cards" class="container d-flex flex-wrap justify-content-center">
+
+        <div class="card text-center" style="width: 12rem; margin: 12px;border: none;">
+          <div class="card-header  position-relative d-flex justify-content-center align-items-center">
+            <span id="id-poke" class="card-text ps-2 position-absolute start-0">#1</span>
+            <h5 id="name-poke" class="card-title text-center m-0">Pickatschu</h5>
+          </div>
+          <div class="card-body p-0" style="height: 10rem;">
+            <img id="img-poke" class="img-poke"
+              src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
+              class="card-img-top img-pokemon" alt="...">
+          </div>
+          <div id="types-poke" class="card-footer text-body-secondary d-flex align-items-center justify-content-evenly">
+            <span class="">water</span>
+            <span class="">fire</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="container d-flex justify-content-center mt-4">
+        <img onclick="loadMorePokemons()" class="arrow-down" src="./assets/icons/arrow.png" alt="arrow-down">
+      </div>
+
+    </div>
+
+
+  </main>
+
+  <footer>
+    <nav class=" navbar fixed-bottom navbar-dark">
+      <div class="container-fluid">
+        <div class="d-flex justify-content-center align-items-center w-100">
+          <div class="text-center">
+            <p class="text-light mb-0">© Simone Arnold</p>
+            <p class="text-light mb-0">Icons by
+              <a class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                href="http://icons8.de" target="_blank" rel="noopener noreferrer">Icons8</a>
+            </p>
+          </div>
+        </div>
+    </nav>
+  </footer>
+
+
+
+</body>
+
+</html>
