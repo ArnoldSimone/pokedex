@@ -1,5 +1,7 @@
-body {
-  min-height: 100vh;
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
   background-color: var(--bs-gray-900);
 }
 
@@ -7,10 +9,13 @@ body {
   background-color: var(--bs-gray-800);
 }
 
-header {
-  height: 150px;
+.container-body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-footer {
-  height: 100px;
+header, footer {
+    flex-shrink: 0; /* verhindert, dass Header/Footer schrumpfen */
 }
+

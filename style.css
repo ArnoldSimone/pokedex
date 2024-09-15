@@ -16,17 +16,23 @@
     filter: brightness(1.5) contrast(1.5) drop-shadow(0 0 15px rgba(255, 255, 255, 0.8));
 }
 
+.cards {
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: var(--bs-gray-600);
+}
+
 .card {
     overflow: hidden;
     border-radius: 10px;
-    background-color: var(--bs-gray-200);
 }
 
-.card:hover {
+.cards:hover {
     cursor: pointer;
+    box-shadow:  0 8px 16px 0 rgba(255, 255, 255, 0.2);
 }
 
-.card:hover .img-poke {
+.cards:hover .img-poke {
     transform: scale(1.1); 
     filter:  drop-shadow(0 0 15px rgba(63, 62, 62, 0.6));
     transition: transform 0.3s ease, filter 0.3s ease; 
@@ -39,35 +45,68 @@
     transition: transform 0.3s ease, filter 0.3s ease; 
 }
 
-
 .spinner-wrapper {
-  background-color: var(--bs-gray-900);; /* Transparenter Hintergrund */
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 10; /* Über Main, aber nicht über Header/Footer */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  transition: all 0.4s ease;
+    background-color: var(--bs-gray-900);; /* Transparenter Hintergrund */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: all 0.4s ease;
+    flex: 1;
 }
 
 .spinner-border {
     height: 60px;
     width: 60px;
-
 }
 
 .disableLoadingSpinner {
     display: none;
 }
 
+
 .main {
-    position: relative;
+    flex: 1;
+    overflow: auto;
 }
+
+.content {
+    position: relative;
+    margin-top: 80px;
+    margin-bottom: 60px;
+}
+
+.nav-link {
+    color: grey;
+    font-weight: normal;
+}
+
+.nav-link.active {
+    color: black;
+    font-weight: bold;
+}
+
+.img-evo-chain {
+    height: 60px;
+    width: 60px;
+    object-fit: cover;
+}
+
+.double-arrow {
+    width: 30px;
+    height: 40px;
+}
+
+.dnone {
+    display: none;
+}
+
+
 
 @media (max-width: 460px) {
    .header-left {
@@ -76,6 +115,3 @@
     padding-bottom: 12px;
    } 
 }
-
-
-

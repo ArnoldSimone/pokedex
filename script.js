@@ -1,10 +1,9 @@
 let limit = 1;
 let pokemons = [];
 
-async function loadAndShopPoke() {
+async function loadAndShowPoke() {
     showLoadingSpinner();
     await fetchPokemons();
-
     renderCards();
     disableLoadingSpinner();
 }
@@ -19,10 +18,10 @@ async function fetchPokemons() {
 }
 
 function renderCards() { 
-    for (let i = 0 ; i < pokemons.length; i++) {
+    for (let i = limit -1 ; i < pokemons.length; i++) {
         let contentCardsRef = document.getElementById('content-cards');       
         contentCardsRef.innerHTML += `        
-            <div onclick="showDetailCard${pokemons[i].id}()" class="card text-center" style="width: 12rem; margin: 12px;border: none;">
+            <div onclick="showDetailCard${pokemons[i].id}()" class="card cards text-center" style="width: 12rem; margin: 12px;border: none;">
             <div class="card-header position-relative d-flex justify-content-center align-items-center">
                 <span id="id-poke" class="card-text ps-2 position-absolute start-0">#${pokemons[i].id}</span>
                 <h5 id="name-poke" class="card-title text-center m-0">${pokemons[i].name[0].toUpperCase() + pokemons[i].name.slice(1)}</h5>
@@ -58,20 +57,25 @@ function getTypesTemplate(typeNames, j) {
 }
 
 async function loadMorePokemons() {
-    
-
     limit = limit + 100;
     showLoadingSpinner();
     await fetchPokemons();
     disableLoadingSpinner();
     renderCards();
- 
 }
 
  function showLoadingSpinner() {
-    document.getElementById('spinner-wrapper').classList.remove('disableLoadingSpinner');
+     document.getElementById('spinner-wrapper').classList.remove('disableLoadingSpinner');
+     document.getElementById('content-cards').classList.add('dnone');
+     document.getElementById('btn-load-more-Poke').classList.add('dnone');
+
 }
 
 function disableLoadingSpinner() {
     document.getElementById('spinner-wrapper').classList.add('disableLoadingSpinner');
+}
+
+function showDetailCard1() {
+    document.getElementById('content').classList.add('dnone');
+    document.getElementById('content-overlay').classList.remove('dnone');
 }
