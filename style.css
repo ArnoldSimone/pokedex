@@ -45,6 +45,10 @@
     transition: transform 0.3s ease, filter 0.3s ease; 
 }
 
+.ability {
+    max-width: 120px;
+}
+
 .spinner-wrapper {
     background-color: var(--bs-gray-900);; /* Transparenter Hintergrund */
     position: fixed;
@@ -68,7 +72,20 @@
 .disableLoadingSpinner {
     display: none;
 }
-
+.content-overlay {
+    background-color: var(--bs-gray-900);; /* Transparenter Hintergrund */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: all 0.4s ease;
+    flex: 1;
+}
 
 .main {
     flex: 1;
@@ -105,8 +122,6 @@
 .dnone {
     display: none;
 }
-
-
 
 @media (max-width: 460px) {
    .header-left {
