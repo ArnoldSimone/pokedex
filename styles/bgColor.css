@@ -1,5 +1,3 @@
-/*  */
-
 .fire {
     background-color: #ed4426ff;
 } 
@@ -19,7 +17,7 @@
     background-color: #A8A77A;
 } 
 .electric {
-    background-color: rgb(196, 196, 2);
+    background-color: rgb(209, 209, 1);
 } 
 .psychic {
     background-color: #FF00FF;
@@ -33,22 +31,21 @@
 .rock {
     background-color: #F5DEB3;
 } 
-.electric {
-    background-color: yellow;
-} 
 .ground {
     background-color: #6B8E23;
 } 
 .normal {
-    background-color: #ADD8E6;
+    background-color: #9cb7e9;
 } 
 .fighting {
     background-color: orange;
 } 
 .flying {
-    background-color: #87CEEB;
+    background-color: #87CEEB;    
+} 
+.fairy {
+    background-color: #73b2ca;
 } 
 .ice {
-    background-color: #E0FFFF;
+    background-color: #b9d4d4;
 } 
-

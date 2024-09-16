@@ -6,207 +6,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pokedex</title>
   <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="./styles/assets.css">
   <link rel="stylesheet" href="./styles/standard.css">
   <link rel="stylesheet" href="./style.css">
-  <link rel="stylesheet" href="./styles/fonts.css">
   <link rel="shortcut icon" href="./assets/icons/pokeball.png" type="image/x-icon">
   <link rel="stylesheet" href="./styles/bgColor.css">
   <script src="./script.js"></script>
+  <script src="./scripts/template.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
-<body onload="loadAndShowPoke()">
+<body onload="loadAndShowPoke()" class="bg-dark bg-gradient">
 
-  <div class="container-body">
-
+  <div class="container-body d-flex justify-content-center align-items-center">
     <header>
-      <nav class="navbar navbar-dark fixed-top">
-        <div class="container-fluid">
+      <nav class="navbar navbar-dark px-3 fixed-top bg-dark bg-gradient">
+        <div class="ctn-navbar container-fluid">
           <div class="header-left d-flex justify-content-between align-items-center w-100">
             <div class="d-flex align-items-center">
               <img class="img-pokemon-header" src="./assets/icons/pokemon.png" alt="">
-              <span class="navbar-brand ps-2 fs-1">Pokedex</span>
+              <span class="title-header navbar-brand ps-2 fs-1">Pokedex</span>
             </div>
-            <input class="form-control w-auto" type="search" placeholder="Search ..." aria-label="Search">
+            <div class="search-box">
+              <input class="input-box form-control w-auto" type="search" placeholder="Search ..." aria-label="Search">
+              <img class="search-image" src="./assets/icons/lupe.png" alt="search-image">
+            </div>
           </div>
       </nav>
     </header>
-
-    <div id="content" class="content">
-
-      <main class="py-5">
-
+    <div id="content" class="content d-flex justify-content-center align-items-center">
+      <main class="pt-5 pb-0">
         <div id="content-cards" class="container-fluid d-flex flex-wrap justify-content-center">
-          <!-- <div class="cards text-center" style="width: 12rem; margin: 12px;border: none;">
-          <div class="card-header position-relative d-flex justify-content-center align-items-center">
-            <span id="id-poke" class="card-text ps-2 position-absolute start-0">#1</span>
-            <h5 id="name-poke" class="card-title text-center m-0">Pickatschu</h5>
-          </div>
-          <div class="card-body p-0" style="height: 10rem;">
-            <img id="img-poke" class="img-poke"
-              src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
-              class="card-img-top img-pokemon" alt="...">
-          </div>
-          <div id="types-poke" class="card-footer text-body-secondary d-flex align-items-center justify-content-evenly">
-            <span class="">water</span>
-            <span class="">fire</span>
-          </div>
-        </div> -->
         </div>
-
-        <div id="btn-load-more-Poke" class="btn-load-more-Poke container d-flex justify-content-center mt-4">
+        <div id="btn-load-more-Poke" class="btn-load-more-Poke container d-flex justify-content-center my-5">
           <img onclick="loadMorePokemons()" class="arrow-down" src="./assets/icons/arrow.png" alt="arrow-down">
         </div>
-
         <div id="spinner-wrapper" class="spinner-wrapper disableLoadingSpinner">
           <div class="spinner-border text-white" role="status">
             <span class="visually-hidden">Loading...</span>
           </div>
           <div class="text-white p-3">Loading ...</div>
         </div>
-
-        <div id="content-overlay" class="content-overlay dnone">
-
-          <!-- <div id="content-cards-overlay" class="container d-flex justify-content-center align-items-center">
-
-            <div id="detail-card-pokemon" class="card text-center d-flex justify-content-center"
-              style="width: 24rem; margin: 12px;border: none;">
-
-              <div class="card-header d-flex justify-content-between align-items-center">
-                <span id="id-poke" class="card-text ps-2">#1</span>
-                <h5 id="name-poke" class="card-title text-center m-0 ">Bulbasaur</h5>
-                <button onclick="closeDetailCard1()" type="button" class="btn-close" aria-label="Close"></button>
-              </div>
-
-              <div class="card-body p-0" style="height: 10rem;">
-                <img id="img-poke" class="img-poke"
-                  src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
-                  class="card-img-top img-pokemon" alt="...">
-              </div>
-
-              <div id="types-poke${pokemons[i].id}"
-                class="card-footer border-bottom-0 text-body-secondary d-flex align-items-center justify-content-evenly">
-                ${renderTypes(i)}
-              </div>
-
-              <div class="register card text-center border-0">
-                <div class="card-header">
-                  <ul class="nav nav-tabs card-header-tabs">
-                    <li class="nav-item fw-bold">
-                      <a class="nav-link active" aria-current="true" href="#main" data-bs-toggle="tab">main</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#stats" data-bs-toggle="tab">stats</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#evo-chain" data-bs-toggle="tab">evo chain</a>
-                    </li>
-                  </ul>
-                </div>
-
-                <div class="card-body p-4 pb-2 tab-content bg-white ">
-                  <div class="tab-pane fade show active" id="main">
-                    <div class="d-flex align-items-center">
-                      <p class="card-text text-start w-50 fw-semibold">Height</p>
-                      <p class="card-text text-start">0.6 m</p>
-                    </div>
-                    <div class="d-flex">
-                      <p class="card-text text-start w-50 fw-semibold">Weight</p>
-                      <p class="card-text text-start">8.5 kg</p>
-                    </div>
-                    <div class="d-flex">
-                      <p class="card-text text-start w-50 fw-semibold">Base Experience</p>
-                      <p class="card-text text-start">62</p>
-                    </div>
-                    <div class="d-flex">
-                      <p class="card-text text-start w-50 fw-semibold">Abilities</p>
-                      <p class="card-text text-start">blaze, solar-power</p>
-                    </div>
-                  </div>
-                  <div class="tab-pane fade" id="stats">
-                    <div class="d-flex align-items-center mb-2">
-                      <p class="card-text text-start w-25 fw-semibold mb-0 p-0">HP</p>
-                      <div class="progress w-75" role="progressbar" aria-label="Danger example" aria-valuenow="100"
-                        aria-valuemin="0" aria-valuemax="255">
-                        <div class="progress-bar bg-danger" style="width: 60%">60%</div>
-                      </div>
-                    </div>
-                    <div class="d-flex align-items-center mb-2">
-                      <p class="card-text text-start w-25 fw-semibold m-0 p-0">ATK</p>
-                      <div class="progress w-75" role="progressbar" aria-label="Danger example" aria-valuenow="100"
-                        aria-valuemin="0" aria-valuemax="255">
-                        <div class="progress-bar bg-danger" style="width: 40%">40%</div>
-                      </div>
-                    </div>
-                    <div class="d-flex align-items-center mb-2">
-                      <p class="card-text text-start w-25 fw-semibold m-0 p-0">DEF</p>
-                      <div class="progress w-75" role="progressbar" aria-label="Danger example" aria-valuenow="100"
-                        aria-valuemin="0" aria-valuemax="255">
-                        <div class="progress-bar bg-danger" style="width: 60%">60%</div>
-                      </div>
-                    </div>
-                    <div class="d-flex align-items-center mb-2">
-                      <p class="card-text text-start w-25 fw-semibold m-0 p-0">SATK</p>
-                      <div class=" progress w-75" role="progressbar" aria-label="Danger example" aria-valuenow="100"
-                        aria-valuemin="0" aria-valuemax="255">
-                        <div class="progress-bar bg-danger" style="width: 60%">60%</div>
-                      </div>
-                    </div>
-                    <div class="d-flex align-items-center mb-2">
-                      <p class="card-text text-start w-25 fw-semibold m-0 p-0">SDEF</p>
-                      <div class=" progress w-75" role="progressbar" aria-label="Danger example" aria-valuenow="100"
-                        aria-valuemin="0" aria-valuemax="255">
-                        <div class="progress-bar bg-danger" style="width: 60%">60%</div>
-                      </div>
-                    </div>
-                    <div class="d-flex align-items-center mb-2">
-                      <p class="card-text text-start w-25 fw-semibold m-0 p-0">SPD</p>
-                      <div class=" progress w-75" role="progressbar" aria-label="Danger example" aria-valuenow="100"
-                        aria-valuemin="0" aria-valuemax="255">
-                        <div class="progress-bar bg-danger" style="width: 60%">60%</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="tab-pane fade" id="evo-chain">
-                    <div class="d-flex justify-content-between">
-                      <div class="d-flex justify-content-center align-items-center">
-                        <div class="d-flex flex-column justify-content-center align-items-center">
-                          <img class="img-evo-chain" src="./assets/icons/pokeball.png" alt="image-pokemon">
-                          <p class="card-text text-start">Charmander</p>
-                        </div>
-                        <img class="double-arrow" src="./assets/icons/double-arrow.png" alt="image-double-arrow">
-                      </div>
-                      <div class="d-flex justify-content-center align-items-center">
-                        <div class="d-flex flex-column justify-content-center align-items-center">
-                          <img class="img-evo-chain" src="./assets/icons/pokeball.png" alt="image-pokemon">
-                          <p class="card-text text-start">Charmeleon</p>
-                        </div>
-                        <img class="double-arrow" src="./assets/icons/double-arrow.png" alt="image-double-arrow">
-                      </div>
-                      <div class="d-flex justify-content-center align-items-center">
-                        <div class="d-flex flex-column justify-content-center align-items-center">
-                          <img class="img-evo-chain" src="./assets/icons/pokeball.png" alt="image-pokemon">
-                          <p class="card-text text-start">Charmeleon</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
-          </div> -->
-
+        <div id="content-overlay" class="content-overlay no-scroll bg-dark bg-gradient bg-opacity-75 dnone">
         </div>
-
       </main>
-
     </div>
-
     <footer>
-      <nav class=" navbar navbar-dark fixed-bottom">
+      <nav class="navbar navbar-footer navbar-dark fixed-bottom bg-dark bg-gradient-reversed">
         <div class="container-fluid">
           <div class="d-flex justify-content-center align-items-center w-100">
             <div class="text-center">
@@ -219,8 +64,6 @@
           </div>
       </nav>
     </footer>
-
-
   </div>
 
 </body>

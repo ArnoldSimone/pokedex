@@ -2,11 +2,11 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: var(--bs-gray-900);
 }
 
-.navbar {
-  background-color: var(--bs-gray-800);
+body {
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .container-body {
@@ -16,6 +16,6 @@ html, body {
 }
 
 header, footer {
-    flex-shrink: 0; /* verhindert, dass Header/Footer schrumpfen */
+    flex-shrink: 0;
 }
 
