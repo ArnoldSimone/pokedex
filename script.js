@@ -5,7 +5,9 @@ let evoChain = [];
 let evolution = [];
     
 async function loadAndShowPoke() {
+    
     showLoadingSpinner();
+    await fetchAllPokemons();
     await fetchPokemons();
     renderCards();
     disableLoadingSpinner();
@@ -17,7 +19,6 @@ async function fetchPokemons() {
         let pokeJson = await resPoke.json();
         pokemons.push(pokeJson);
     }
-    console.log(pokemons);
 }
 
 function renderCards() { 
@@ -143,3 +144,93 @@ function showNextPoke(i) {
 showDetailCard(i);
 }
   
+
+
+
+
+
+let allPokemons = [];
+let urls = [];
+
+async function fetchAllPokemons() {
+    let res = await fetch('https://pokeapi.co/api/v2/pokemon/');
+    let resJson = await res.json();
+    let totalPokemons = resJson.count;
+    let limitAllPoke = 20;
+    let totalPages = Math.ceil(totalPokemons / limitAllPoke);
+    createUrlList(limitAllPoke, totalPages);
+    fetchAndPushUrlsToAllPokemons();
+}
+
+function createUrlList(limitAllPoke, totalPages) {
+    for (let i = 0; i < totalPages; i++) {
+        let offset = i * limitAllPoke;
+        urls.push(`https://pokeapi.co/api/v2/pokemon?limit=${limitAllPoke}&offset=${offset}`);
+    }
+}
+
+async function fetchAndPushUrlsToAllPokemons() {
+    let results = await Promise.all(urls.map(url => fetchPage(url)));
+    results.forEach(result => allPokemons.push(...result));
+}
+
+async function fetchPage(url) {
+    let response = await fetch(url); 
+    let data = await response.json(); 
+    return data.results;
+}
+
+
+console.log(allPokemons);
+
+let findPoke = [];
+
+function searchPokemon() {
+
+    findPoke = [];
+    let inputBoxRef = document.getElementById('input-box');
+
+    if ( inputBoxRef.value.length >= 3) {
+        for (let i = 0; i < allPokemons.length; i++) {
+            if ((allPokemons[i].name).includes(inputBoxRef.value)) {
+                findPoke.push(allPokemons[i].name);
+                console.log(findPoke);
+            }; 
+            renderAllFindPokemons(i);
+        }    
+    } else {
+        console.log('min. 3 Zeichen');   
+    }
+} 
+
+
+
+function renderAllFindPokemons(i) {
+let contentCardsRef = document.getElementById('content-cards');       
+    for (let i = 0; i < 10; i++) {
+        
+        contentCardsRef.innerHTML = "";
+        
+        contentCardsRef.innerHTML += getFindCardsTemplate(i); 
+        }
+
+}
+
+function getFindCardsTemplate(i) {
+    return `        
+            <div onclick="showDetailCard(${i})" class="cards text-center ${setBackgroundCardBody(i)}" style="width: 14rem; margin: 12px;">
+              <div class="card-header border-0 ${setBackgroundCardBody(i)} text-light p-3 position-relative d-flex justify-content-center align-items-center">
+                  <h6 id="id-poke" class="card-text ps-3 pt-2 position-absolute start-0 ">#${pokemons[i].id}</h6>
+                  <h5 id="name-poke" class="card-title text-center">${pokemons[i].name[0].toUpperCase() + pokemons[i].name.slice(1)}</h5>
+              </div>
+              <div class="card-body p-0 m-0 ${setBackgroundCardBody(i)}" style="height: 10rem;">
+                  <img id="img-poke" class="img-poke"
+                  src="${pokemons[i].sprites.other['official-artwork'].front_default}"
+                  class="card-img-top img-pokemon" alt="image-pokemon">
+              </div>
+              <div id="types-poke${pokemons[i].id}" class=" m-0 card-footer bg-gradient opacity-100 ${setBackgroundCardBody(i)} py-3 text-body-secondary d-flex align-items-center justify-content-evenly">
+                  ${renderTypes(i)}
+              </div>
+            </div>`;
+}
+    
