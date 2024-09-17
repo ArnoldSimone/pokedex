@@ -1,8 +1,8 @@
 function getCardsTemplate(i) {
     return `        
             <div onclick="showDetailCard(${i})" class="cards text-center ${setBackgroundCardBody(i)}" style="width: 14rem; margin: 12px;">
-              <div class="card-header border-0 ${setBackgroundCardBody(i)} text-light p-3 position-relative d-flex justify-content-center align-items-center">
-                  <h6 id="id-poke" class="card-text ps-3 pt-2 position-absolute start-0 ">#${pokemons[i].id}</h6>
+              <div class="card-header border-0 ${setBackgroundCardBody(i)} text-light p-3 position-relative d-flex flex-column justify-content-center align-items-center">
+                  <h6 id="id-poke" class="card-text ps-3 pt-2 ">#${pokemons[i].id}</h6>
                   <h5 id="name-poke" class="card-title text-center">${pokemons[i].name[0].toUpperCase() + pokemons[i].name.slice(1)}</h5>
               </div>
               <div class="card-body p-0 m-0 ${setBackgroundCardBody(i)}" style="height: 10rem;">
