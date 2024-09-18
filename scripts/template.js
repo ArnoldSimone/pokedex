@@ -20,7 +20,9 @@ function getTypesTemplate(typeNames, j) {
   return `<span class="type rounded-4 px-2 text-light ${typeNames[j]}">${typeNames[j]}</span>`;
 }
 
-function getDetailCardTemplate(i) {
+async function getDetailCardTemplate(i) {
+
+  let evoChainHTML = await renderEvolutionChain();
     return `
         <div id="content-cards-overlay" class="content-cards-overlay d-flex justify-content-center align-items-center" >
             <div id="detail-card-pokemon" class="card text-center d-flex justify-content-center" style="width: 24rem; margin: 12px;border: none;">
@@ -119,11 +121,20 @@ function getDetailCardTemplate(i) {
                   </div>
                   <div class="tab-pane fade" id="evo-chain">
                     <div class="d-flex justify-content-evenly align-items-center">
-                        ${renderEvolutionChain(i)}
+                        ${evoChainHTML}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>`;
-    }
+}
+    
+
+function getContentEvoChainTempate(imagePokemonEvo, indexEvo) {
+    return `   
+        <div class="d-flex flex-column justify-content-center align-items-center">
+            <img class="img-evo-chain" src="${imagePokemonEvo}" alt="image-pokemon">
+            <p class="card-text text-start">${evolution[indexEvo][0].toUpperCase() + evolution[indexEvo].slice(1)}</p>
+        </div>`;                        
+}

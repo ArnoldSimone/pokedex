@@ -27,9 +27,10 @@
               <span class="title-header navbar-brand ps-2 fs-1">Pokedex</span>
             </div>
             <div class="search-box">
-              <input onchange="searchPokemon()" id="input-box" class="input-box form-control w-auto" type="search"
-                placeholder="Search ..." aria-label="Search">
+              <input onchange="searchPokemon()" id="input-box" class="input-box form-control w-auto position-relativ"
+                type="search" placeholder="Search ..." aria-label="Search">
               <img class="search-image" src="./assets/icons/lupe.png" alt="search-image">
+              <div id="default-input" class="position-absolute text-danger"></div>
             </div>
           </div>
       </nav>
@@ -39,8 +40,11 @@
         <div id="content-cards" class="container-fluid d-flex flex-wrap justify-content-center">
         </div>
         <div id="btn-load-more-Poke" class="btn-load-more-Poke container d-flex justify-content-center my-5">
-          <img onclick="loadMorePokemons()" class="arrow-down" src="./assets/icons/arrow.png" alt="arrow-down">
+          <img id="image-load-more" onclick="loadMorePokemons()" class="arrow-down" src="./assets/icons/arrow.png"
+            alt="arrow-down">
+          <div onclick="loadAndShowPoke()" id="back-to-cards" class="back-to-cards text-white dnone">Zurück</div>
         </div>
+
         <div id="spinner-wrapper" class="spinner-wrapper disableLoadingSpinner">
           <div class="spinner-border text-white" role="status">
             <span class="visually-hidden">Loading...</span>

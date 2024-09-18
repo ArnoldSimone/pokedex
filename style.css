@@ -17,16 +17,26 @@
 .arrow-down {
     width: 30px;
     height: 25px;
-}
-
-.arrow-down {
     transition: transform 0.3s ease;
 }
 
 .arrow-down:hover {
     transform: scale(1.2);
     filter: brightness(1.5) contrast(1.5) drop-shadow(0 0 15px rgba(255, 255, 255, 0.8));
+    cursor: pointer;
 }
+
+.back-to-cards {
+    font-size: 24px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.back-to-cards:hover {
+    transform: scale(1.2);
+    filter: brightness(1.5) contrast(1.5) drop-shadow(0 0 15px rgba(255, 255, 255, 0.8));
+}
+
 
 .cards {
     overflow: hidden;
