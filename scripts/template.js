@@ -31,7 +31,7 @@ async function getDetailCardTemplate(i) {
                 <h4 id="name-poke" class="card-title text-center m-0">${pokemons[i].name[0].toUpperCase() + pokemons[i].name.slice(1)}</h4>
                 <button onclick="closeDetailCard(${i})" type="button" class="btn-close btn-close-white" aria-label="Close"></button>
               </div>
-              <div class="card-body p-0 ${setBackgroundCardBody(i)} d-flex justify-content-around align-items-center" style="height: 10rem;">
+              <div class="card-body card-body-image p-0 ${setBackgroundCardBody(i)} d-flex justify-content-around align-items-center" style="height: 9rem;">
                 <img onclick="showLastPoke(${i})" id="img-last-poke" class="img-last-poke" src="./assets/icons/arrow-left.png" alt="image-arrow-left">
                 <img id="img-poke-overlay" class="img-poke-overlay"
                   src="${pokemons[i].sprites.other['showdown'].front_default}"
@@ -39,7 +39,7 @@ async function getDetailCardTemplate(i) {
                 <img onclick="showNextPoke(${i})" id="img-next-poke" class="img-next-poke" src="./assets/icons/arrow-right.png" alt="image-arrow-right">
               </div>
               <div id="types-poke${pokemons[i].id}"
-                class="card-footer border-0 py-4 text-body-secondary d-flex align-items-center justify-content-center gap-3">
+                class="card-footer border-0 py-3 text-body-secondary d-flex align-items-center justify-content-center gap-3">
                 ${renderTypes(i)}
               </div>
               <div class="register card text-center border-0 w-100">
@@ -56,7 +56,7 @@ async function getDetailCardTemplate(i) {
                     </li>
                   </ul>
                 </div>
-                <div class="card-body p-4 tab-content bg-white ">
+                <div class="card-body card-body-overlay p-4 tab-content bg-white ">
                   <div class="tab-pane fade show active" id="main">
                     <div class="d-flex">
                       <p class="card-text text-start w-50 fw-semibold">Height</p>
@@ -76,35 +76,35 @@ async function getDetailCardTemplate(i) {
                     </div>
                   </div>
                   <div class="tab-pane fade" id="stats">
-                    <div class="d-flex align-items-center mb-2">
+                    <div class="d-flex align-items-center mb-1">
                       <p class="card-text text-start w-25 fw-semibold mb-0 p-0">HP</p>
                       <div class="progress w-75" role="progressbar" aria-label="Danger example" aria-valuenow="${pokemons[i].stats[0].base_stat}"
                         aria-valuemin="0" aria-valuemax="255">
                         <div class="progress-bar bg-danger" style="width:${(pokemons[i].stats[0].base_stat) / 2.55}%">${pokemons[i].stats[0].base_stat}</div>
                       </div>
                     </div>
-                    <div class="d-flex align-items-center mb-2">
+                    <div class="d-flex align-items-center mb-1">
                       <p class="card-text text-start w-25 fw-semibold m-0 p-0">ATK</p>
                       <div class="progress w-75" role="progressbar" aria-label="Danger example" aria-valuenow="${pokemons[i].stats[1].base_stat}"
                         aria-valuemin="0" aria-valuemax="255">
                         <div class="progress-bar bg-danger" style="width:${(pokemons[i].stats[1].base_stat) / 2.55}%">${pokemons[i].stats[1].base_stat}</div>
                       </div>
                     </div>
-                    <div class="d-flex align-items-center mb-2">
+                    <div class="d-flex align-items-center mb-1">
                       <p class="card-text text-start w-25 fw-semibold m-0 p-0">DEF</p>
                       <div class="progress w-75" role="progressbar" aria-label="Danger example" aria-valuenow="${pokemons[i].stats[2].base_stat}"
                         aria-valuemin="0" aria-valuemax="255">
                         <div class="progress-bar bg-danger" style="width:${(pokemons[i].stats[2].base_stat) / 2.55}%">${pokemons[i].stats[2].base_stat}</div>
                       </div>
                     </div>
-                    <div class="d-flex align-items-center mb-2">
+                    <div class="d-flex align-items-center mb-1">
                       <p class="card-text text-start w-25 fw-semibold m-0 p-0">SATK</p>
                       <div class=" progress w-75" role="progressbar" aria-label="Danger example" aria-valuenow="${pokemons[i].stats[3].base_stat}"
                         aria-valuemin="0" aria-valuemax="255">
                         <div class="progress-bar bg-danger" style="width:${(pokemons[i].stats[3].base_stat) / 2.55}%">${pokemons[i].stats[3].base_stat}</div>
                       </div>
                     </div>
-                    <div class="d-flex align-items-center mb-2">
+                    <div class="d-flex align-items-center mb-1">
                       <p class="card-text text-start w-25 fw-semibold m-0 p-0">SDEF</p>
                       <div class=" progress w-75" role="progressbar" aria-label="Danger example" aria-valuenow="${pokemons[i].stats[4].base_stat}"
                         aria-valuemin="0" aria-valuemax="255">
@@ -113,14 +113,14 @@ async function getDetailCardTemplate(i) {
                     </div>
                     <div class="d-flex align-items-center">
                       <p class="card-text text-start w-25 fw-semibold m-0 p-0">SPD</p>
-                      <div class=" progress w-75" role="progressbar" aria-label="Danger example" aria-valuenow="${pokemons[i].stats[5].base_stat}"
+                      <div class="progress w-75" role="progressbar" aria-label="Danger example" aria-valuenow="${pokemons[i].stats[5].base_stat}"
                         aria-valuemin="0" aria-valuemax="255">
                         <div class="progress-bar bg-danger" style="width:${(pokemons[i].stats[5].base_stat) / 2.55}%">${pokemons[i].stats[5].base_stat}</div>
                       </div>
                     </div>
                   </div>
-                  <div class="tab-pane fade" id="evo-chain">
-                    <div class="d-flex justify-content-evenly align-items-center">
+                  <div class="tab-pane fade d-flex justify-content-evenly align-items-center w-100" id="evo-chain">
+                    <div class="d-flex justify-content-evenly align-items-center w-100">
                         ${evoChainHTML}
                     </div>
                   </div>

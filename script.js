@@ -190,7 +190,7 @@ async function fetchPage(url) {
 async function searchPokemon() {
     findPokeNames = [];
     let inputValueRef = document.getElementById('input-box');
-    let inputValue = inputValueRef.value;
+    let inputValue = inputValueRef.value.toLowerCase();
     if (inputValue.length >= 3) { 
         document.getElementById('default-input').innerHTML = "";  
         findPokeNames = allPokemonNames.filter(pokemon => pokemon.name.includes(inputValue));

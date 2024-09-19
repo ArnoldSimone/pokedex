@@ -37,7 +37,6 @@
     filter: brightness(1.5) contrast(1.5) drop-shadow(0 0 15px rgba(255, 255, 255, 0.8));
 }
 
-
 .cards {
     overflow: hidden;
     border-radius: 12px !important;
@@ -149,6 +148,15 @@
     font-weight: bold;
 }
 
+.nav-tabs .nav-link {
+    padding: 0.25rem 0.5rem; 
+    font-size: 1rem;
+  }
+
+ .card-body-overlay {
+    height: 210px;
+ }
+
 .img-evo-chain {
     height: 60px;
     width: 60px;
@@ -185,7 +193,7 @@
         height: 20px;
     }   
     .card-text{
-        font-size: 16px;
+        font-size: 14px;
     }
     .btn-load-more-Poke {
         margin: 24px 0 !important;
@@ -206,6 +214,19 @@
     }
     .btn-load-more-Poke {
         margin: 12px 0 !important;
+    }
+    .card-body-overlay {
+        height: 185px;
+        font-size: 15px ;
+     }
+     p.card-text.text-start.w-50.fw-semibold {
+        margin-bottom: 8px;
+    }
+    .card-body.card-body-image {
+        height: 6rem !important;
+    }
+    .content-overlay {
+        padding-top: 24px;
     }
 }
 
