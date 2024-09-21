@@ -6,6 +6,8 @@ let evolution = [];
 let allPokemonNames = [];
 let urls = [];
 let findPokeNames = [];
+let evoChainCache = {};
+let pokemonCache = {};
 
 async function loadAndShowPoke() {
     pokemons = [];
@@ -13,7 +15,6 @@ async function loadAndShowPoke() {
     evolution = [];
     allPokemonNames = [];
     urls = [];
-    
     showLoadMoreButton();
     showLoadingSpinner();
     await fetchAllPokemons(); 
@@ -40,12 +41,18 @@ async function fetchPokemons() {
 async function loadEvoChain(i) {
     try {
         let id = pokemons[i].id;
+        if (evoChainCache[id]) {
+            evoChain.push(evoChainCache[id]); 
+            pushArrayEvolutionData(evoChainCache[id]);
+            return;
+        }
         let resSpecies = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
         let resSpeciesJson = await resSpecies.json();
         let evoChainUrl = resSpeciesJson.evolution_chain.url;
         let resEvoChainUrl = await fetch(evoChainUrl);
-        let evoChainJson = await resEvoChainUrl.json();        
-        evoChain.push(evoChainJson); 
+        let evoChainJson = await resEvoChainUrl.json();
+        evoChainCache[id] = evoChainJson;
+        evoChain.push(evoChainJson);
         pushArrayEvolutionData(evoChainJson);
     } catch (error) {
         console.error('Fehler beim Laden der Evolutionskette:', error);
@@ -128,17 +135,29 @@ async function renderEvolutionChain() {
 }
 
 async function comparePokemonNameFetchLoadEvoImage(indexEvo, indexAllPoke, contentEvoChain) {
-    let imagePokemonEvo;
-              if (evolution[indexEvo] === allPokemonNames[indexAllPoke].name) {
-                let resPoke = await fetch(`https://pokeapi.co/api/v2/pokemon/${indexAllPoke+1}`);
-                let pokeJson = await resPoke.json();
-                imagePokemonEvo = pokeJson.sprites.other['official-artwork'].front_default;
-                contentEvoChain += getContentEvoChainTempate(imagePokemonEvo, indexEvo);                                
-                if (indexEvo < evolution.length - 1) {
-                    contentEvoChain += `<img class="double-arrow" src="./assets/icons/double-arrow.png" alt="image-double-arrow">`;
-                }
-    }   
+    if (evolution[indexEvo] === allPokemonNames[indexAllPoke].name) {
+        let pokemonId = indexAllPoke + 1;
+        let imagePokemonEvo = await checkPokemonInCacheElseFetch(pokemonId);
+        contentEvoChain += getContentEvoChainTempate(imagePokemonEvo, indexEvo);
+        if (indexEvo < evolution.length - 1) {
+            contentEvoChain += `<img class="double-arrow" src="./assets/icons/double-arrow.png" alt="image-double-arrow">`;
+        }
+    }
     return contentEvoChain;
+}
+
+async function checkPokemonInCacheElseFetch(pokemonId) {
+let imagePokemonEvo;
+        if (pokemonCache[pokemonId]) {
+            let cachedPokemon = pokemonCache[pokemonId];
+            imagePokemonEvo = cachedPokemon.sprites.other['official-artwork'].front_default;
+        } else {
+            let resPoke = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
+            let pokeJson = await resPoke.json();
+            pokemonCache[pokemonId] = pokeJson;
+            imagePokemonEvo = pokeJson.sprites.other['official-artwork'].front_default;
+    } 
+     return imagePokemonEvo;
 }
 
 function showLastPoke(i) { 
