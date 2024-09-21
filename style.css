@@ -22,7 +22,6 @@
 
 .arrow-down:hover {
     transform: scale(1.2);
-    filter: brightness(1.5) contrast(1.5) drop-shadow(0 0 15px rgba(255, 255, 255, 0.8));
     cursor: pointer;
 }
 
@@ -40,6 +39,7 @@
 .cards {
     overflow: hidden;
     border-radius: 12px !important;
+    box-shadow: inset 0px 0px 11px 3px rgba(255, 255, 255, 0.2);
 }
 
 .card {
@@ -57,7 +57,7 @@
 
 .cards:hover {
     cursor: pointer;
-    box-shadow:  0 8px 16px 0 rgba(255, 255, 255, 0.2);
+    box-shadow: inset 0px 0px 11px 5px rgba(255, 255, 255, 0.4);
 }
 
 .cards:hover .img-poke {

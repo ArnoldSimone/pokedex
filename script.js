@@ -1,251 +1,134 @@
-let limit = 1;
-let additionalLimit = 20;
-let pokemons = [];
-let evoChain = [];
-let evolution = [];
-let allPokemonNames = [];
-let urls = [];
-let findPokeNames = [];
-let evoChainCache = {};
-let pokemonCache = {};
+let pokeNameUrl = [];
+let pokeDetails = [];
+let start = 0;
+let end = 3;
 
-async function loadAndShowPoke() {
-    pokemons = [];
-    evoChain = [];
-    evolution = [];
-    allPokemonNames = [];
-    urls = [];
-    showLoadMoreButton();
-    showLoadingSpinner();
-    await fetchAllPokemons(); 
-    await fetchPokemons(); 
-    renderCards(); 
-    disableLoadingSpinner();
+async function init() {
+    await loadAllPoke(); 
+    await loadPokeDetails(start, end);
+    renderPokemons();
 }
 
-async function fetchPokemons() {
-    for (let i = limit; i < limit + additionalLimit; i++) {
-        try {
-            let resPoke = await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`);
-            if (!resPoke.ok) {
-                throw new Error(`Error fetching Pokémon with ID ${i}`);
-            }
-            let pokeJson = await resPoke.json();
-            pokemons.push(pokeJson);
-        } catch (error) {
-            console.error(error);
-        }
+// lade alle pokemons und schreibe id, name und url in array "pokeNameUrl"
+async function loadAllPoke() {
+    let resPokemons = await fetch("https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0");
+    let resPokeJson = await resPokemons.json();
+    resPokeJson.results.forEach((pokemon, index) => {
+        pokeNameUrl.push({
+        "id": index +1,
+        "name": pokemon.name,
+        "url": pokemon.url
+        }); 
+    });
+}
+
+// lade 20 Pokemondetails aus der url von Array pokeNameUrl und schreibe sie in ein Array
+async function loadPokeDetails() {
+    for (let i = start; i < end; i++) {
+        let url = pokeNameUrl[i].url;
+        let resPokeDetail = await fetch(url);
+        let resPokeDetailJson = await resPokeDetail.json();
+        pokeDetails.push({
+            "abilities": resPokeDetailJson.abilities.map(a => a.ability.name),
+            "types": resPokeDetailJson.types.map(t => t.type.name),
+            "baseExperience": resPokeDetailJson.base_experience,
+            "id": resPokeDetailJson.id,
+            "height": resPokeDetailJson.height,
+            "weight": resPokeDetailJson.weight,
+            "imagePoke": resPokeDetailJson.sprites.other['official-artwork'].front_default,
+            "id": resPokeDetailJson.id,
+            "name": resPokeDetailJson.name,
+            "hp": resPokeDetailJson.stats[0].base_stat,
+            "attack": resPokeDetailJson.stats[1].base_stat,
+            "defense": resPokeDetailJson.stats[2].base_stat,
+            "specialAttack": resPokeDetailJson.stats[3].base_stat,
+            "specialDefense": resPokeDetailJson.stats[4].base_stat,
+            "speed": resPokeDetailJson.stats[5].base_stat,
+        });
+    };  
+}
+
+function renderPokemons() {
+    let contentCards = document.getElementById('content-cards');
+    contentCards.innerHTML = "";
+    for (let i = 0; i < pokeDetails.length; i++) {
+       contentCards.innerHTML += getCardsTemplate(i); 
+    }    
+}
+
+function renderTypes(i) {
+    let types = "";
+    for (let typeIndex = 0; typeIndex < pokeDetails[i].types.length; typeIndex++) {
+        types += getTypesTemplate(i, typeIndex);
     }
-}
-
-async function loadEvoChain(i) {
-    try {
-        let id = pokemons[i].id;
-        if (evoChainCache[id]) {
-            evoChain.push(evoChainCache[id]); 
-            pushArrayEvolutionData(evoChainCache[id]);
-            return;
-        }
-        let resSpecies = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
-        let resSpeciesJson = await resSpecies.json();
-        let evoChainUrl = resSpeciesJson.evolution_chain.url;
-        let resEvoChainUrl = await fetch(evoChainUrl);
-        let evoChainJson = await resEvoChainUrl.json();
-        evoChainCache[id] = evoChainJson;
-        evoChain.push(evoChainJson);
-        pushArrayEvolutionData(evoChainJson);
-    } catch (error) {
-        console.error('Fehler beim Laden der Evolutionskette:', error);
-    }
-}
-
-function pushArrayEvolutionData(evoChainJson) {
-    evolution.push(evoChainJson.chain.species.name);
-    if (evoChainJson.chain.evolves_to.length > 0) {
-        evolution.push(evoChainJson.chain.evolves_to[0].species.name);
-        if (evoChainJson.chain.evolves_to[0].evolves_to.length > 0) {
-            evolution.push(evoChainJson.chain.evolves_to[0].evolves_to[0].species.name);
-        }
-    }
-}
-
-function renderCards() { 
-    let contentCardsRef = document.getElementById('content-cards'); 
-    contentCardsRef.innerHTML = "";
-    for (let i = 0; i < pokemons.length; i++) {     
-        contentCardsRef.innerHTML += getCardsTemplate(i); 
-    }
-}
-
-function setBackgroundCardBody(i) {
-    let typeNames = pokemons[i].types.map(typeObj => typeObj.type.name);
-    return typeNames[0];
-}
-
-function renderTypes(i) { 
-    let contentTypesName = "";
-    let typeNames = pokemons[i].types.map(typeObj => typeObj.type.name);
-    for (let j = 0; j < typeNames.length; j++) { 
-        contentTypesName += getTypesTemplate(typeNames, j); 
-    }
-    return contentTypesName;
+    return types;
 }
 
 async function loadMorePokemons() {
-    limit = limit + additionalLimit;
-    showLoadingSpinner();
-    await fetchPokemons();
-    disableLoadingSpinner();
-    renderCards();
-}
-
-function showLoadingSpinner() {
-     document.getElementById('spinner-wrapper').classList.remove('disableLoadingSpinner');
-}
-
-function disableLoadingSpinner() {
-    document.getElementById('spinner-wrapper').classList.add('disableLoadingSpinner');
-}
-
-function closeDetailCard() {
-    document.getElementById('content-overlay').classList.add('dnone');
-    document.body.classList.remove('no-scroll');
-    let contentOverlayRef = document.getElementById('content-overlay');
-    contentOverlayRef.innerHTML = "";
+    start = start + 20;
+    end = end + 20;
+    await loadPokeDetails(start, end);
+    renderPokemons();
+    console.log(pokeDetails);
 }
 
 async function showDetailCard(i) {
-    document.getElementById('content-overlay').classList.remove('dnone');
+    let contentOverlay = document.getElementById('content-overlay');
+    contentOverlay.innerHTML = await getDetailCardTemplate(i);
+    contentOverlay.classList.remove('dnone');
     document.body.classList.add('no-scroll');
-    let contentOverlayRef = document.getElementById('content-overlay');
-    evoChain = [];
-    evolution = [];
-    await loadEvoChain(i);
-    contentOverlayRef.innerHTML = await getDetailCardTemplate(i); 
 }
 
-async function renderEvolutionChain() {
-    let contentEvoChain = "";
-    for (let indexEvo = 0; indexEvo < evolution.length; indexEvo++) { 
-        for (let indexAllPoke = 0; indexAllPoke < allPokemonNames.length; indexAllPoke++) {
-            contentEvoChain = await comparePokemonNameFetchLoadEvoImage(indexEvo, indexAllPoke, contentEvoChain);
-        }
-    }
-    return contentEvoChain;
+function closeDetailCard() {
+    let contentOverlay = document.getElementById('content-overlay');
+    contentOverlay.classList.add('dnone');
+    document.body.classList.remove('no-scroll');
 }
 
-async function comparePokemonNameFetchLoadEvoImage(indexEvo, indexAllPoke, contentEvoChain) {
-    if (evolution[indexEvo] === allPokemonNames[indexAllPoke].name) {
-        let pokemonId = indexAllPoke + 1;
-        let imagePokemonEvo = await checkPokemonInCacheElseFetch(pokemonId);
-        contentEvoChain += getContentEvoChainTempate(imagePokemonEvo, indexEvo);
-        if (indexEvo < evolution.length - 1) {
-            contentEvoChain += `<img class="double-arrow" src="./assets/icons/double-arrow.png" alt="image-double-arrow">`;
-        }
-    }
-    return contentEvoChain;
-}
-
-async function checkPokemonInCacheElseFetch(pokemonId) {
-let imagePokemonEvo;
-        if (pokemonCache[pokemonId]) {
-            let cachedPokemon = pokemonCache[pokemonId];
-            imagePokemonEvo = cachedPokemon.sprites.other['official-artwork'].front_default;
-        } else {
-            let resPoke = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
-            let pokeJson = await resPoke.json();
-            pokemonCache[pokemonId] = pokeJson;
-            imagePokemonEvo = pokeJson.sprites.other['official-artwork'].front_default;
+function showLastPoke(i) {
+    if (i == 0) {
+        i = pokeDetails.length - 1;
+        showDetailCard(i);
+    } else {
+        i = i - 1;
+        showDetailCard(i);
     } 
-     return imagePokemonEvo;
-}
-
-function showLastPoke(i) { 
-  if (i == 0) {
-    i = pokemons.length - 1;
-  } else {
-    i--;
-    }
-   showDetailCard(i);
 }
 
 function showNextPoke(i) {
-  if(i == pokemons.length -1){
-    i = 0;  
-  } else {
-    i++;
-    }    
-    showDetailCard(i);
-}
-
-async function fetchAllPokemons() {
-    let res = await fetch('https://pokeapi.co/api/v2/pokemon/');
-    let resJson = await res.json();
-    let totalPokemons = resJson.count;
-    let limitAllPoke = 20;
-    let totalPages = Math.ceil(totalPokemons / limitAllPoke);
-    createUrlList(limitAllPoke, totalPages);
-    fetchAndPushUrlsToAllPokemons();
-}
-
-function createUrlList(limitAllPoke, totalPages) {
-    for (let i = 0; i < totalPages; i++) {
-        let offset = i * limitAllPoke;
-        urls.push(`https://pokeapi.co/api/v2/pokemon?limit=${limitAllPoke}&offset=${offset}`);
+    if (i == pokeDetails.length - 1) {
+        i = 0;
+        showDetailCard(i);
+    } else {
+        i = i + 1;
+        showDetailCard(i);
     }
 }
 
-async function fetchAndPushUrlsToAllPokemons() {
-    let results = await Promise.all(urls.map(url => fetchPage(url)));
-    results.forEach(result => allPokemonNames.push(...result));
-}
+let evoChain = [];
+let evoChainIdName = [];
 
-async function fetchPage(url) {
-    let response = await fetch(url); 
-    let data = await response.json(); 
-    return data.results;
-}
+async function createEvoChain(id) {
 
-async function searchPokemon() {
-    findPokeNames = [];
-    let inputValueRef = document.getElementById('input-box');
-    let inputValue = inputValueRef.value.toLowerCase();
-    if (inputValue.length >= 3) { 
-        document.getElementById('default-input').innerHTML = "";  
-        findPokeNames = allPokemonNames.filter(pokemon => pokemon.name.includes(inputValue));
-        await fetchPokemonsFounded();
-        limit = 1;
-        removeLoadMoreButton();
-        renderCards();
-        inputValueRef.value = "";
-     } else {
-        document.getElementById('default-input').innerHTML = "min. 3 Zeichen";   
+    try {
+        let resEvoChain = await fetch(`https://pokeapi.co/api/v2/evolution-chain/${id}`);
+        let resEvoChainJson = await resEvoChain.json();
+
+        evoChain.push(resEvoChainJson);
+        let evolutionNames = [evoChain[0].chain.species.name]; 
+
+        if (evoChain[0].chain.evolves_to.length > 0) {
+            evolutionNames.push(evoChain[0].chain.evolves_to[0].species.name); 
+            if (evoChain[0].chain.evolves_to[0].evolves_to.length > 0) {
+                evolutionNames.push(evoChain[0].chain.evolves_to[0].evolves_to[0].species.name);
+            }
+        } 
+        evoChainIdName.push({
+            "id": evoChain[0].id,
+            "name": evolutionNames,
+        })
+
+    } catch (error) {
+        console.error("Error fetching evolution chain:", error);
     }
-} 
-
-async function fetchPokemonsFounded() {
-    pokemons = [];
-    for (let i = 0; i < findPokeNames.length; i++) {
-        let url = findPokeNames[i].url;        
-        let resPoke = await fetch(url);
-        let pokeJson = await resPoke.json();
-        pokemons.push(pokeJson);       
-    }   
 }
-
-function removeLoadMoreButton() {
-    document.getElementById('content-cards').innerHTML = "";
-    document.getElementById('back-to-cards').classList.remove('dnone');
-    document.getElementById('image-load-more').classList.add('dnone');
-}
-
-function showLoadMoreButton() {
-    document.getElementById('back-to-cards').classList.add('dnone');
-    document.getElementById('image-load-more').classList.remove('dnone');
-}
-
-
-
-
-
-
