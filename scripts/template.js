@@ -1,14 +1,13 @@
 function getCardsTemplate(i) {
-    return `        
+  return `        
             <div onclick="showDetailCard(${i})" class="cards bg-dark text-center" style="width: 14rem; margin: 12px;">
               <div class="card-header border-0 text-light p-3 position-relative d-flex flex-column justify-content-center align-items-center">
                   <h6 id="id-poke${pokeDetails[i].id}" class="card-text id-poke ps-3 pt-2 fs-6">#${pokeDetails[i].id}</h6>
                   <h5 id="name-poke" class="card-title text-center">${pokeDetails[i].name.charAt(0).toUpperCase() + pokeDetails[i].name.slice(1)}</h5>
               </div>
               <div class="card-body p-0 m-0" style="height: 10rem;">
-                  <img id="img-poke" class="img-poke"
-                  src="${pokeDetails[i].imagePoke}"
-                  class="card-img-top img-pokemon" alt="image-pokemon">
+                  <img id="img-poke" class="img-poke card-img-top img-pokemon"
+                  src="${pokeDetails[i].imagePoke}" alt="image-pokemon">
               </div>
               <div id="types-poke" class="m-0 card-footer bg-gradient opacity-100 py-3 text-body-secondary d-flex align-items-center justify-content-evenly">
               ${renderTypes(i)}</div>
@@ -22,9 +21,8 @@ function getTypesTemplate(i, typeIndex) {
 
 async function getDetailCardTemplate(i) {
   let id = pokeDetails[i].id;
-  let evoChain = await createEvoChain(id);
-
-    return `
+  await createEvoChain(i, id);
+  return `
         <div id="content-cards-overlay${i}" class="content-cards-overlay d-flex justify-content-center align-items-center" >
             <div id="detail-card-pokemon" class="card text-center d-flex justify-content-center bg-dark" style="width: 24rem; margin: 12px;border: none;">
               <div class="card-header text-light p-2 border-0 d-flex justify-content-between align-items-center">
@@ -122,8 +120,8 @@ async function getDetailCardTemplate(i) {
                     </div>
                   </div>
                   <div class="tab-pane fade d-flex justify-content-evenly align-items-center w-100" id="evo-chain">
-                    <div class="d-flex justify-content-evenly align-items-center w-100">
-                        ${evoChain}
+                    <div class="d-flex justify-content-evenly align-items-center w-100 h-100">
+                        ${renderEvoChain(i)}
                     </div>
                   </div>
                 </div>
@@ -131,4 +129,16 @@ async function getDetailCardTemplate(i) {
             </div>
           </div>`;
 }
-    
+
+function evoChainTemplate(name, image) {
+  return `
+        <div class="d-flex flex-column align-items-center justify-content-center">
+            <img class="img-evo-chain" src="${image}" alt="image-pokemon">
+            <span class="evo-chain-name">${name.charAt(0).toUpperCase() + name.slice(1)}</span>
+        </div>
+    `
+}
+
+function getArrowIfNeeded() {
+  return `<img class="double-arrow" src="./assets/icons/double-arrow.png" alt="image-arrow">`;
+}

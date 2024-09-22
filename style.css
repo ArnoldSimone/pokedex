@@ -1,6 +1,6 @@
 .ctn-navbar {
     max-width: 1440px;
-} 
+}
 
 .title-header {
     color: #F8E55B;
@@ -61,26 +61,27 @@
 }
 
 .cards:hover .img-poke {
-    transform: scale(1.1); 
-    filter:  drop-shadow(0 0 15px rgba(63, 62, 62, 0.6));
-    transition: transform 0.3s ease, filter 0.3s ease; 
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 15px rgba(63, 62, 62, 0.6));
+    transition: transform 0.3s ease, filter 0.3s ease;
 }
 
 .img-poke {
-    width: 70%; 
-    height: 100%; 
-    object-fit: contain; 
-    transition: transform 0.3s ease, filter 0.3s ease; 
+    width: 70%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease, filter 0.3s ease;
 }
 
 .img-poke-overlay {
-    width: 40%; 
-    height: 100%; 
-    object-fit: contain; 
-    transition: transform 0.3s ease, filter 0.3s ease; 
+    width: 40%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease, filter 0.3s ease;
 }
 
-.img-last-poke, .img-next-poke {
+.img-last-poke,
+.img-next-poke {
     width: 32px;
 }
 
@@ -89,7 +90,7 @@
 }
 
 .spinner-wrapper {
-    background-color: var(--bs-gray-900); 
+    background-color: var(--bs-gray-900);
     position: fixed;
     top: 0;
     left: 0;
@@ -149,13 +150,13 @@
 }
 
 .nav-tabs .nav-link {
-    padding: 0.25rem 0.5rem; 
+    padding: 0.25rem 0.5rem;
     font-size: 1rem;
-  }
+}
 
- .card-body-overlay {
+.card-body-overlay {
     height: 210px;
- }
+}
 
 .img-evo-chain {
     height: 60px;
@@ -164,8 +165,8 @@
 }
 
 .double-arrow {
-    width: 30px;
-    height: 40px;
+    width: 15px;
+    height: 30px;
 }
 
 .dnone {
@@ -177,79 +178,106 @@
 }
 
 @media (max-width: 460px) {
-   .header-left {
+    .header-left {
         flex-direction: column;
         gap: 0px;
         padding-bottom: 8px;
-   } 
-   .content-cards-overlay {
+    }
+
+    .content-cards-overlay {
         width: 95%;
-   }
-   .ability {
+    }
+
+    .ability {
         width: 100px;
-   }
-   .double-arrow {
+    }
+
+    .double-arrow {
         width: 15px;
         height: 20px;
-    }   
-    .card-text{
+    }
+
+    .card-text {
         font-size: 14px;
     }
+
     .btn-load-more-Poke {
         margin: 24px 0 !important;
     }
+
     .img-pokemon-header {
         height: 40px;
     }
+
     .title-header {
         padding: 0;
     }
+
     .input-box {
         width: 220px !important;
         height: 30px;
         margin-top: 4px;
     }
+
     .search-box img {
         margin-top: 3px;
     }
+
     .btn-load-more-Poke {
         margin: 12px 0 !important;
     }
+
     .card-body-overlay {
         height: 185px;
-        font-size: 15px ;
-     }
-     p.card-text.text-start.w-50.fw-semibold {
+        font-size: 15px;
+    }
+
+    p.card-text.text-start.w-50.fw-semibold {
         margin-bottom: 8px;
     }
+
     .card-body.card-body-image {
         height: 6rem !important;
     }
+
     .content-overlay {
         padding-top: 24px;
+    }
+
+    .default-input {
+        font-size: 12px;
+    }
+
+    .evo-chain-name {
+        font-size: 12px;
+    }
+
+    .img-evo-chain {
+        height: 50px;
+        width: 50px;
     }
 }
 
 .search-box {
-  position: relative;
+    position: relative;
 }
 
 .search-box input {
-  padding-left: 40px; 
+    padding-left: 40px;
 }
 
 .search-box img {
-  position: absolute;
-  left: 10px; 
-  top: 50%;
-  transform: translateY(-50%);
-  width: 20px; 
-  height: 20px;
-  pointer-events: none; 
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
 }
 
 .search-box input:focus {
-  border: none; 
-  box-shadow: none; 
-  outline: none;
+    border: none;
+    box-shadow: none;
+    outline: none;
 }
