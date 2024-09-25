@@ -2,6 +2,7 @@ let pokeNameUrl = [];
 let pokeDetails = [];
 let evoChain = [];
 let evoChainDetails = [];
+let filteredPokemons = [];
 let start = 0;
 let end = 20;
 
@@ -24,8 +25,6 @@ async function loadAllPoke() {
             "url": pokemon.url
         });
     });
-    console.log(pokeNameUrl);
-
 }
 
 // lade 20 Pokemondetails aus der url von Array pokeNameUrl und schreibe sie in ein Array
@@ -55,40 +54,14 @@ async function loadPokeDetails() {
     };
 }
 
-
 function renderPokemons() {
     let contentCards = document.getElementById('content-cards');
     contentCards.innerHTML = "";
-
-    // Wenn gefilterte Pokemons vorhanden sind, benutze diese, ansonsten alle Pokemon
     let currentPokemons = filteredPokemons.length > 0 ? filteredPokemons : pokeDetails;
-
-    // Durchlaufe das aktuelle Array der Pokémon
     for (let i = 0; i < currentPokemons.length; i++) {
-        // Finde den Index des Pokémon im ursprünglichen Array, falls gefiltert
         let index = pokeDetails.findIndex(pokemon => pokemon.id === currentPokemons[i].id);
-        contentCards.innerHTML += getCardsTemplate(index);
-    }
-}
-
-
-function renderPokemons() {
-    let contentCards = document.getElementById('content-cards');
-    contentCards.innerHTML = "";
-
-    // Falls gefilterte Pokémon existieren, rendere diese, ansonsten die Standard-Pokémon
-    let currentPokemons = filteredPokemons.length > 0 ? filteredPokemons : pokeDetails;
-
-    // Durchlaufe das aktuelle Array der Pokémon
-    for (let i = 0; i < currentPokemons.length; i++) {
-        // Suche nach dem Index des Pokémon in pokeDetails
-        let pokeIndex = pokeDetails.findIndex(pokemon => pokemon.id === currentPokemons[i].id);
-
-        // Vermeide Fehler, wenn das Pokemon nicht gefunden wird
-        if (pokeIndex !== -1) {
-            contentCards.innerHTML += getCardsTemplate(pokeIndex);
-        } else {
-            console.error("Pokemon mit ID nicht gefunden:", currentPokemons[i].id);
+        if (index !== -1) {
+            contentCards.innerHTML += getCardsTemplate(i);
         }
     }
 }
@@ -123,24 +96,36 @@ function closeDetailCard() {
     document.body.classList.remove('no-scroll');
 }
 
-function showLastPoke(i) {
-    if (i == 0) {
-        i = pokeDetails.length - 1;
-        showDetailCard(i);
-    } else {
-        i = i - 1;
-        showDetailCard(i);
+function showNextPoke(i) {
+    let currentPokemons = filteredPokemons.length > 0 ? filteredPokemons : pokeDetails;
+    if (currentPokemons.length <= 1) {
+        console.log("Es gibt kein nächstes Pokémon zu zeigen."); // oder eine andere Methode zur Benachrichtigung
+        return; // Funktion beenden, da kein nächstes Pokémon verfügbar ist
     }
+    let currentIndex = currentPokemons.findIndex(pokemon => pokemon.id === pokeDetails[i].id);
+    if (currentIndex == currentPokemons.length - 1) {
+        currentIndex = 0;
+    } else {
+        currentIndex += 1;
+    }
+    let nextPokeIndex = pokeDetails.findIndex(pokemon => pokemon.id === currentPokemons[currentIndex].id);
+    showDetailCard(nextPokeIndex);
 }
 
-function showNextPoke(i) {
-    if (i == pokeDetails.length - 1) {
-        i = 0;
-        showDetailCard(i);
-    } else {
-        i = i + 1;
-        showDetailCard(i);
+function showLastPoke(i) {
+    let currentPokemons = filteredPokemons.length > 0 ? filteredPokemons : pokeDetails;
+    if (currentPokemons.length <= 1) {
+        console.log("Es gibt kein nächstes Pokémon zu zeigen."); // oder eine andere Methode zur Benachrichtigung
+        return; // Funktion beenden, da kein nächstes Pokémon verfügbar ist
     }
+    let currentIndex = currentPokemons.findIndex(pokemon => pokemon.id === pokeDetails[i].id);
+    if (currentIndex == 0) {
+        currentIndex = currentPokemons.length - 1;
+    } else {
+        currentIndex -= 1;
+    }
+    let prevPokeIndex = pokeDetails.findIndex(pokemon => pokemon.id === currentPokemons[currentIndex].id);
+    showDetailCard(prevPokeIndex);
 }
 
 async function createEvoChain(i, id) {
@@ -222,22 +207,29 @@ function disableLoadingSpinner() {
     document.getElementById('spinner-wrapper').classList.add('disableLoadingSpinner');
 }
 
-let filteredPokemons = [];
-
-function searchPokemons() {
+async function searchPokemons() {
     let input = document.getElementById('input-box').value.trim().toLowerCase();
     if (input.length < 3) {
         document.getElementById('default-input').innerHTML = "min. 3 Zeichen";
-        filteredPokemons = [];
+        filteredPokemons = []; // Leere gefilterte Pokémon
     } else {
+        document.getElementById('default-input').innerHTML = "";
         filteredPokemons = pokeNameUrl.filter(pokemon => pokemon.name.includes(input));
-        console.log(filteredPokemons);
-        // Lade die Details der gefilterten Pokémon, falls sie noch nicht in pokeDetails sind
-        loadFilteredPokeDetails();
+        if (filteredPokemons.length === 0) {
+            document.getElementById('default-input').innerHTML = "Kein Pokémon gefunden";
+            return; // Keine Pokémon gefunden
+        }
+
+        await loadFilteredPokeDetails(); // Lade die gefilterten Pokémon
+        renderPokemons(); // Rendre die gefilterten Pokémon
+        document.getElementById('image-load-more').classList.add('dnone'); // Verstecke den "Load More"-Button
+        document.getElementById('back-to-cards').classList.remove('dnone'); // Zeige den "Zurück"-Button
+
+        document.getElementById('input-box').value = ""; // Leere das Eingabefeld
     }
 }
-
 async function loadFilteredPokeDetails() {
+    showLoadingSpinner();
     for (let i = 0; i < filteredPokemons.length; i++) {
         let filteredPoke = filteredPokemons[i];
         if (!pokeDetails.find(pokemon => pokemon.id === filteredPoke.id)) {
@@ -265,5 +257,12 @@ async function loadFilteredPokeDetails() {
             }
         }
     }
+    disableLoadingSpinner();
+}
+
+function showAlreadyLoadedPokemons() {
+    filteredPokemons = [];
     renderPokemons();
+    document.getElementById('image-load-more').classList.remove('dnone');
+    document.getElementById('back-to-cards').classList.add('dnone');
 }
